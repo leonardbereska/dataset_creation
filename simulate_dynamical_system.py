@@ -31,7 +31,7 @@ class VanderPool(DynamicalSystem):
 
 
 class Lorenz(DynamicalSystem):
-    def __init__(self, sigma=10., beta=8. / 3, rho=28.0):
+    def __init__(self, sigma=10., beta=8./3, rho=28.):
         super(Lorenz).__init__()
         self.sigma = sigma
         self.beta = beta

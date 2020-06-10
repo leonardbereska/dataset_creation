@@ -1,2 +1,3 @@
 conda install pytorch
 conda install scipy
+conda install matplotlib

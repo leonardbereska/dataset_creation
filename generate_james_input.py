@@ -226,7 +226,7 @@ def gen_input_vectors():
 
 
 if __name__ == "__main__":
-    # load Jame's data
+    # load James' data
     mat_fp = '/Volumes/Fred_D/Physics/science_of_mind/theoretical_neuroscience/ZI/svae-plrnn/del_alt_11_26forDaniel_KDEnonopt200000_withCatcf_cleaned.mat'
 
     james = scipy.io.loadmat(mat_fp)
@@ -236,4 +236,3 @@ if __name__ == "__main__":
     with open('/Volumes/Fred_D/Physics/science_of_mind/theoretical_neuroscience/ZI/data/James_input.p', 'wb') as fo:
         pickle.dump(input_vecs, fo)
 
-    
