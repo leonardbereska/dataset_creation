@@ -68,13 +68,9 @@ def create_james_dataset(data_path=None):
         data_path = '../del_alt_11_26forDaniel_KDEnonopt200000_withCatcf_cleaned.mat'
     data_mat = io.loadmat(data_path)
     data = data_mat['iFRtrafo'][0]
-    trial_list = to_list(data)
+    trial_list = [data[i] for i in range(len(data))]
     trial_list = [tc.FloatTensor(trial.T) for trial in trial_list]
     return trial_list
-
-
-def to_list(data):
-    return [data[i] for i in range(len(data))]
 
 
 if __name__ == '__main__':
