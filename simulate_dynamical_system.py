@@ -65,13 +65,18 @@ class Lorenz96(DynamicalSystem):
 
 if __name__ == '__main__':
     import visualize
+    import matplotlib.pyplot as plt
+
     vdp = VanderPool(mu=4.)
-    data = vdp.simulate_system(step_size=0.03)
-    visualize.plot_2d(data)
+    data = vdp.simulate_system(step_size=0.1)
+    #visualize.plot_2d(data)
+    plt.plot(data)
 
     lor = Lorenz()
     data = lor.simulate_system()
-    visualize.plot_3d(data)
+    #visualize.plot_3d(data)
+    plt.plot(data)
+    plt.show()
 
     lor96 = Lorenz96(n_variables=36, forcing=8)
     data = lor96.simulate_system()

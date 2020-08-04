@@ -70,8 +70,25 @@ class Dataset:
         data = self.data.numpy()
         data = batchify(data=data, batch_size=batch_size)
         print('created {} dataset of shape {}'.format(save_name, data.shape))
-        save_path = os.path.join('datasets', save_name)
+        save_path = os.path.join('../svae-msudata/datasets', save_name)
         np.save(save_path, data)
+
+
+def create_vdp_dataset():
+    time_steps = 100000
+    step_size = 0.05
+    noise_level = 0.01
+    batch_size = 1000
+    save_name = 'vdp_data'
+
+    vdp = ds.VanderPool(mu=0.)
+    data = vdp.simulate_system(time_steps=time_steps, step_size=step_size)
+    dataset = Dataset(data)
+    dataset.show()
+    dataset.to_tensor()
+    dataset.normalize()
+    dataset.add_gaussian_noise(noise_level=noise_level)
+    dataset.save(batch_size=batch_size, save_name=save_name)
 
 
 def create_lorenz_dataset():
@@ -131,7 +148,21 @@ def create_eeg_dataset():
     dataset.save(batch_size=1000, save_name='eeg_data')
 
 
+def create_eeg_tiny():
+    data_raw = np.load('datasets/eeg_data/data_pre.npy').T
+    dataset = Dataset(data_raw)
+    dataset.kernel_smoothen(kernel_sigma=20)
+    dataset.to_tensor()
+    dataset.crop_shape((10000, 2))
+    dataset.show()
+    dataset.normalize()
+    dataset.add_gaussian_noise(noise_level=0.01)
+    dataset.save(batch_size=1000, save_name='eeg_10000_2_k20')
+
+
 if __name__ == '__main__':
+    # create_vdp_dataset()
     # create_lorenz_dataset()
     # create_lorenz96_dataset()
-    create_eeg_dataset()
+    # create_eeg_dataset()
+    create_eeg_tiny()
