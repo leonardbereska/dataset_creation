@@ -21,3 +21,14 @@ def plot_3d(data):
     ax.set_ylabel('$x_2$')
     ax.set_zlabel('$x_3$')
     plt.show()
+
+
+def plot_all_dim(data):
+    plt.plot(data)
+    plt.show()
+
+
+if __name__ == '__main__':
+    import numpy as np
+    data = np.load('datasets/eeg_data.npy')
+    plot_all_dim(data[0, :, :5])
