@@ -10,20 +10,20 @@ import numpy as np
 ## path to raw s3 concat data pickle file
 RAW_PATH = '/Volumes/Fred_D/Physics/science_of_mind/research/ZI/data/EEG/concat_s3.pkl' 
 ## path of output eeg dataset
-EEG_DATASET_FP_OUT = './eeg_dataset_trunc_all_gaussian5_T2_chunk15.npy'
+EEG_DATASET_FP_OUT = './eeg_dataset_trunc_all_gaussian5_Tdot5_chunk60.npy'
 ## random seed
 SEED = 121
 ## sampling frequency
 FREQ_SAMP = 1000
 ## num of chunks per mode of data
-NUM_CHUNK = 15
+NUM_CHUNK = 60
 ## series length for each chunk, in  sec
-T_LEN = 2
+T_LEN = 0.5
 
 
 def get_truc_data(raw_data_array, ind, t_len=T_LEN):
 
-    return raw_data_array[: , ind: ind+t_len*FREQ_SAMP]
+    return raw_data_array[: , ind: ind+int(t_len*FREQ_SAMP)]
 
 
 # Gaussian kernel
@@ -79,20 +79,22 @@ if __name__ == "__main__":
             if k == 'data_encmain':
                 trunc_arr = []
                 for _arr in v:
-                    _trunc_arr = _arr[ind: ind+T_LEN*FREQ_SAMP]
+                    _trunc_arr = _arr[ind: ind+int(T_LEN*FREQ_SAMP)]
                     trunc_arr.append(_trunc_arr)
                 trunc_arr = np.array(trunc_arr)
             else:
                 trunc_arr = get_truc_data(v, ind)
             
-            print('trunc arr shape: {}'.format(trunc_arr.shape))
+            #print('trunc arr shape: {}'.format(trunc_arr.shape))
             trunc_arr_smooth = smoothen(trunc_arr, get_kernel(5))
             trunc_arr_smooth = np.transpose(trunc_arr_smooth)
             
             eeg_dataset.append(trunc_arr_smooth)
     
     eeg_dataset = np.array(eeg_dataset)
-    print(eeg_dataset.shape)
+    print('output array: {}'.format(eeg_dataset.shape))
+    print('sanity check if NaN in array: {}'.format(np.isnan(eeg_dataset).any()))
+
     np.save(EEG_DATASET_FP_OUT, eeg_dataset)
 
 
