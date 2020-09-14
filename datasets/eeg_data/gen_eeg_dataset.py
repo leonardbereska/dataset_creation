@@ -10,7 +10,7 @@ import numpy as np
 ## path to raw s3 concat data pickle file
 RAW_PATH = '/Volumes/Fred_D/Physics/science_of_mind/research/ZI/data/EEG/concat_s3.pkl' 
 ## path of output eeg dataset
-EEG_DATASET_FP_OUT = './eeg_dataset_trunc_all_gaussian5_norm.npy'
+EEG_DATASET_FP_OUT = './eeg_dataset_trunc_all_gaussian5_norm_sub30.npy'
 ## random seed
 SEED = 121
 ## sampling frequency
@@ -19,6 +19,8 @@ FREQ_SAMP = 1000
 NUM_CHUNK = 3
 ## series length for each chunk, in  sec
 T_LEN = 10.0
+## num of dimensions for subset
+SUB_DIM = 30
 
 
 def get_truc_data(raw_data_array, ind, t_len=T_LEN):
@@ -97,8 +99,13 @@ if __name__ == "__main__":
             trunc_arr_smooth = smoothen(trunc_arr, get_kernel(5))
             trunc_arr_smooth_norm = normalize(trunc_arr_smooth)
             trunc_arr_smooth_norm = np.transpose(trunc_arr_smooth_norm)
+
+            trunc_arr_smooth_norm_sub = trunc_arr_smooth_norm[
+                :, np.random.choice(trunc_arr_smooth_norm.shape[1], SUB_DIM, replace=False)
+            ]
+            # non-replacement
             
-            eeg_dataset.append(trunc_arr_smooth_norm)
+            eeg_dataset.append(trunc_arr_smooth_norm_sub)
     
     eeg_dataset = np.array(eeg_dataset)
     print('output array: {}'.format(eeg_dataset.shape))
